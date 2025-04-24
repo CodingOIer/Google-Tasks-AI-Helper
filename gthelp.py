@@ -123,6 +123,7 @@ def processMessage(message: str):
             break
 
 
-while True:
-    msg = input('>>>')
-    response = processMessage(msg)
+if __name__ == '__main__':
+    while True:
+        msg = input('>>>')
+        response = processMessage(msg)
