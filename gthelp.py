@@ -72,6 +72,11 @@ def getTasksInfo():
 
 def processMessage(message: str):
     global recent
+    if message == '@clear':
+        recent = []
+        recent.append({'role': 'system', 'content': prompt})
+        print('已清空历史记录')
+        return
     recent.append(
         {
             'role': 'system',
@@ -120,9 +125,4 @@ def processMessage(message: str):
 
 while True:
     msg = input('>>>')
-    if msg == '@clear':
-        recent = []
-        recent.append({'role': 'system', 'content': prompt})
-        print('已清空历史记录')
-        continue
     response = processMessage(msg)
