@@ -20,7 +20,7 @@ prompt = '''
 2. 修改任务：|<TOOL=CHANGE_TASKS<|>任务ID<|>新任务标题<|>新任务细节>|
 3. 标记完成任务：|<TOOL=FINISH_TASKS<|>任务ID>|
 4. 删除任务：|<TOOL=REMOVE_TASKS<|>任务ID>|
-其中，删除任务操作请在用户放弃任务的情况下使用，任务细节建议按照以下规则填写方便你自己理解：
+其中，删除任务操作请在用户放弃任务的情况下使用，CHANGE_TASKS 的新任务描述可以留空表示不修改，任务细节建议按照以下规则填写方便你自己理解：
 ---
 时间：yyyy-mm-dd hh:mm 前完成/开始
 描述：任务描述
@@ -28,6 +28,7 @@ prompt = '''
 ---
 当你使用命令或工具时，请等待系统做出回复，你可以告诉用户你正在处理任务，并等待系统回复。
 请记住，你每次只能使用一个命令，如果你需要接连使用多个命令，请每次只回答一个命令，系统处理后你再继续。
+你不需要给出任务 ID，回答尽量简短，智能一点，用户回答模棱两可时先斩后奏。
 '''
 
 recent = []
@@ -121,9 +122,10 @@ def processMessage(message: str):
                 recent.append({'role': 'system', 'content': '未知命令'})
         else:
             break
+    print('>>> ', end='')
 
 
 if __name__ == '__main__':
     while True:
-        msg = input('>>>')
+        msg = input()
         response = processMessage(msg)

@@ -52,6 +52,12 @@ def changeTask(
         new_status = 'needsAction'
     if new_status == 'C':
         new_status = 'completed'
+    if new_title == '':
+        new_title = None
+    if new_notes == '':
+        new_notes = None
+    if new_status == '':
+        new_status = None
     service = getAuth()
     task = service.tasks().get(tasklist=tasklist_id, task=task_id).execute()
     if new_title:

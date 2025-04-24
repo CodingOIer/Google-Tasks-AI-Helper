@@ -48,4 +48,5 @@ def test():
 
 
 if __name__ == '__main__':
+    print('>>> ', end='')
     app.run(debug=True, port=8000)  # 将端口号从8080改为8081
