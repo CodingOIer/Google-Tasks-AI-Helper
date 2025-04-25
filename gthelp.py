@@ -15,8 +15,7 @@ prompt = '''
 你可以使用下面的指令，当你的回答中包含命令时，系统将会解析你的命令，并将结果给你，接着在用户操作之前继续询问你。
 当你的回答中不包含命令时，系统不会解析你的命令，并且会结束时对你的询问。
 在你使用命令或工具时必须包含命令格式。
-1. 获取任务列表：|<TOOL=GET_TASKS>|
-2. 添加任务：|<TOOL=ADD_TASKS<|>任务标题<|>任务细节>|
+1. 添加任务：|<TOOL=ADD_TASKS<|>任务标题<|>任务细节>|
 2. 修改任务：|<TOOL=CHANGE_TASKS<|>任务ID<|>新任务标题<|>新任务细节>|
 3. 标记完成任务：|<TOOL=FINISH_TASKS<|>任务ID>|
 4. 删除任务：|<TOOL=REMOVE_TASKS<|>任务ID>|
@@ -84,6 +83,7 @@ def processMessage(message: str):
             'content': f'现在的时间是：{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}',
         }
     )
+    recent.append({'role': 'system', 'content': getTasksInfo()})
     recent.append({'role': 'user', 'content': message})
     while True:
         response_stream = requestsDeepseek(recent)
@@ -98,10 +98,7 @@ def processMessage(message: str):
         # Command parsing based on the full message
         if '|<TOOL=' in full_response:
             content = full_response.split('|<')[1].split('>|')[0].split('<|>')
-            if content[0] == 'TOOL=GET_TASKS':
-                recent.append({'role': 'assistant', 'content': full_response})
-                recent.append({'role': 'system', 'content': getTasksInfo()})
-            elif content[0] == 'TOOL=ADD_TASKS':
+            if content[0] == 'TOOL=ADD_TASKS':
                 recent.append({'role': 'assistant', 'content': full_response})
                 gtasks.addTask(content[1], content[2])
                 recent.append({'role': 'system', 'content': '任务添加成功'})
